@@ -91,7 +91,7 @@ public class RadioTest {
     @Test
     public void shouldNotSetVolumeLevelWhenOutOfRangePositive() {
         Radio sound = new Radio();
-        sound.setVolumeLevel(11);
+        sound.setVolumeLevel(101);
         int expected = 0;
         int actual = sound.getVolumeLevel();
         Assertions.assertEquals(expected, actual);
@@ -128,9 +128,9 @@ public class RadioTest {
     @Test
     public void shouldNotAddVolumeFromMax() {
         Radio sound = new Radio();
-        sound.setVolumeLevel(10);
+        sound.setVolumeLevel(100);
         sound.plusVolume();
-        int expected = 10;
+        int expected = 100;
         int actual = sound.getVolumeLevel();
         Assertions.assertEquals(expected, actual);
     }
@@ -151,6 +151,50 @@ public class RadioTest {
         sound.minusVolume();
         int expected = 4;
         int actual = sound.getVolumeLevel();
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldNotSetMaxStationWithNegative() {
+        Radio play = new Radio(-1);
+        int expected = 9;
+        int actual = play.getMaxRadioStationNumber();
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldNotSetMaxStationWithZero() {
+        Radio play = new Radio(0);
+        int expected = 9;
+        int actual = play.getMaxRadioStationNumber();
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldNotSetNewStationAboveMax() {
+        Radio play = new Radio(1);
+        play.setCurrentRadioStationNumber(3);
+        int expected = 0;
+        int actual = play.getCurrentRadioStationNumber();
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldPlayMinStationWhenCurrentIsMax() {
+        Radio play = new Radio(5);
+        play.setCurrentRadioStationNumber(4);
+        play.next();
+        int expected = 0;
+        int actual = play.getCurrentRadioStationNumber();
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldPlayMaxStationWhenCurrentIsMin() {
+        Radio play = new Radio(5);
+        play.prev();
+        int expected = 4;
+        int actual = play.getCurrentRadioStationNumber();
         Assertions.assertEquals(expected, actual);
     }
 }
