@@ -1,26 +1,51 @@
 package ru.netology;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+
 public class Radio {
-    private int currentRadioStationNumber;
-    protected int volumeLevel;
+    private int minRadioStationNumber;
+    private int maxRadioStationNumber = minRadioStationNumber + 9;
+    private int currentRadioStationNumber = minRadioStationNumber;
 
-    public int getCurrentRadioStationNumber() {
-
-        return currentRadioStationNumber;
+    public Radio(int numberOfStations) {
+        if (numberOfStations <= 0) {
+            return;
+        } else {
+            maxRadioStationNumber = minRadioStationNumber + numberOfStations - 1;
+        }
     }
+
+//    public Radio() {
+//    }
+
+//    public int getMaxRadioStationNumber() {
+//
+//        return maxRadioStationNumber;
+//    }
+
+//    public int getCurrentRadioStationNumber() {
+//
+//        return currentRadioStationNumber;
+//    }
 
     public void setCurrentRadioStationNumber(int newCurrentRadioStationNumber) {
         if (newCurrentRadioStationNumber < 0) {
             return;
         }
-        if (newCurrentRadioStationNumber > 9) {
+        if (newCurrentRadioStationNumber > maxRadioStationNumber) {
             return;
         }
         currentRadioStationNumber = newCurrentRadioStationNumber;
     }
 
     public void next() {
-        if (currentRadioStationNumber == 9) {
+        if (currentRadioStationNumber == maxRadioStationNumber) {
             currentRadioStationNumber = 0;
         } else {
             currentRadioStationNumber++;
@@ -29,18 +54,20 @@ public class Radio {
 
     public void prev() {
         if (currentRadioStationNumber == 0) {
-            currentRadioStationNumber = 9;
+            currentRadioStationNumber = maxRadioStationNumber;
         } else {
             currentRadioStationNumber--;
         }
     }
 
-    public int getVolumeLevel() {
-        return volumeLevel;
-    }
+    protected int volumeLevel;
+
+//    public int getVolumeLevel() {
+//        return volumeLevel;
+//    }
 
     public void setVolumeLevel(int newVolumeLevel) {
-        if ((newVolumeLevel < 0) || (newVolumeLevel > 10)) {
+        if ((newVolumeLevel < 0) || (newVolumeLevel > 100)) {
             return;
         } else {
             volumeLevel = newVolumeLevel;
@@ -48,7 +75,7 @@ public class Radio {
     }
 
     public void plusVolume() {
-        if (volumeLevel == 10) {
+        if (volumeLevel == 100) {
             getVolumeLevel();
         } else {
             volumeLevel++;
